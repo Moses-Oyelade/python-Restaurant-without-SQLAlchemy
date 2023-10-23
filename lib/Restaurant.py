@@ -68,10 +68,33 @@ class Customer:
         cls.all = [cls.new_from_db(row) for row in all]
         return cls.all
     
-    
-    
-    
         
-        
-        
+class Restaurant: 
     
+    def __init__(self, name:str):
+        self.id = None
+        self.name = name
+
+    
+    def create_table(cls):
+        sql = """
+            CREATE TABLE IF NOT EXISTS restaurants(
+                id INTEGER PRIMARY KEY,
+                name TEXT,
+            )
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+        
+    def save(self):
+        sql = """
+            INSERT INTO restaurants (name)
+            VALUES (?)
+        """
+        CURSOR.execute(sql, (self.name))
+        CONN.commit()
+        self.id = CURSOR.execute("SELECT last_insert_rowid() FROM restaurants").fetchone()[0]
+   
+        
+    def get_name(self):
+        return f"Restaurant {self}."

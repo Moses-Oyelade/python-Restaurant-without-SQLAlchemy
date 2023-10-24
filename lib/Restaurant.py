@@ -1,6 +1,6 @@
 import sqlite3
 
-CONN = sqlite3.connect('lib/')
+CONN = sqlite3.connect('lib/restaurant.db')
 CURSOR = CONN.cursor()
     
 class Customer:
@@ -35,16 +35,16 @@ class Customer:
         self.id = CURSOR.execute("SELECT last_insert_rowid() FROM customers").fetchone()[0]
     
     @classmethod
-    def create(cls, ):
-        customer = Customer(name, first_name, last_name)
+    def create(cls, first_name, last_name):
+        customer = Customer(first_name, last_name)
         customer.save()
         return customer
     
-    @classmethod
-    def new_from_db(cls, row):
-         = cls(row[1], row[2])
-        customer.id = row[0]
-        return customer
+    # @classmethod
+    # def new_from_db(cls, row):
+    #      = cls(row[1], row[2])
+    #     customer.id = row[0]
+    #     return customer
     
     def given_name(self):
         return f'Customer: {self.first_name}.'
@@ -71,12 +71,12 @@ class Customer:
         
 class Restaurant: 
     
-    def __init__(self, name:str):
+    def __init__(self, name="Mr. Biggs"):
         self.id = None
         self.name = name
 
     
-    def create_table(cls):
+    def create_rest_table(cls):
         sql = """
             CREATE TABLE IF NOT EXISTS restaurants(
                 id INTEGER PRIMARY KEY,
@@ -94,7 +94,26 @@ class Restaurant:
         CURSOR.execute(sql, (self.name))
         CONN.commit()
         self.id = CURSOR.execute("SELECT last_insert_rowid() FROM restaurants").fetchone()[0]
-   
         
     def get_name(self):
         return f"Restaurant {self}."
+
+class Review(Customer, Restaurant):
+    
+    def __init__(self, rating):
+        self.id = None
+        self.rating = 0
+        
+        
+        
+    #  @classmethod   
+    # def rating(cls):
+    #     for restraurant in cls.Restaurant:
+            
+            
+            
+customer1= Customer() 
+restaurant1=Restaurant("Mr. Biggs")
+restaurant1.create_rest_table()  
+print(customer1.full_name())
+print(customer1.create("Humphrey", "Gyang"))
